@@ -37,8 +37,7 @@ bookingSchema.pre<BookingDocument>(
   }
 );
 
-// Export the Booking model
-export const Booking = mongoose.model<BookingDocument>(
-  "Booking",
-  bookingSchema
-);
+// Export the Booking model, avoiding overwrite in development
+export const Booking =
+  mongoose.models.Booking ||
+  mongoose.model<BookingDocument>("Booking", bookingSchema);

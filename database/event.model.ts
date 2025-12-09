@@ -41,8 +41,7 @@ const eventSchema = new Schema<EventDocument>(
   { timestamps: true }
 );
 
-// Add unique index on slug
-eventSchema.index({ slug: 1 });
+// Note: unique index on slug is automatically created by the unique: true option
 
 // Pre-save hook for slug generation, date normalization, and time consistency
 eventSchema.pre<EventDocument>("save", async function (this: EventDocument) {
@@ -79,5 +78,6 @@ eventSchema.pre<EventDocument>("save", async function (this: EventDocument) {
   }
 });
 
-// Export the Event model
-export const Event = mongoose.model<EventDocument>("Event", eventSchema);
+// Export the Event model, avoiding overwrite in development
+export const Event =
+  mongoose.models.Event || mongoose.model<EventDocument>("Event", eventSchema);
